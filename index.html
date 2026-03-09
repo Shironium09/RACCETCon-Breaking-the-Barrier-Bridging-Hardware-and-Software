@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RACCETCon Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app">
+    <header class="header">
+      <div class="logo">RC</div>
+      <h1>RACCETCon Dashboard</h1>
+      <div class="status" id="status">Idle</div>
+    </header>
+
+    <div class="main-content">
+      <div class="board" id="board">
+        <div class="board-placeholder" id="placeholder">Awaiting Input</div>
+        <img class="board-image" id="boardImage" />
+      </div>
+
+      <div class="log-panel">
+        <div class="log-header">
+          <span>Log</span>
+          <span class="log-count" id="logCount">0</span>
+        </div>
+        <div class="log-list" id="logList">
+          <div class="log-empty" id="logEmpty">No events yet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
