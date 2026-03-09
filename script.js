@@ -50,3 +50,39 @@ function addLog(tag, text){
   document.getElementById('logCount').textContent = logCount;
   
 }
+
+function onTrigger(data){
+
+  addLog('evt', 'Trigger received');
+
+  // add your reactions here, for example:
+  // showImage('photo.png');
+  // playAudio('sound.mp3');
+
+}
+
+let ws = null;
+
+function connectWebSocket(){
+
+  const host = window.location.host || 'localhost:3000';
+  ws = new WebSocket('ws://' + host);
+
+  ws.onopen = function(){
+    document.getElementById('status').textContent = 'Connected';
+    addLog('evt', 'WebSocket connected');
+  };
+
+  ws.onmessage = function(e){
+    const msg = JSON.parse(e.data);
+    if (msg.type === 'trigger') onTrigger(msg.data);
+  };
+
+  ws.onclose = function(){
+    document.getElementById('status').textContent = 'Disconnected';
+    setTimeout(connectWebSocket, 3000);
+  };
+
+}
+
+connectWebSocket();
