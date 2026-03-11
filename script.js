@@ -2,14 +2,24 @@ let logCount = 0;
 
 function showImage(src){
 
-  const img = document.getElementById('boardImage');
-  const placeholder = document.getElementById('placeholder');
-  img.src = src;
-  img.style.display = 'block';
-  placeholder.style.display = 'none';
-  addLog('img', 'Image: ' + src);
+    const img = document.getElementById('boardImage');
+    const placeholder = document.getElementById('placeholder');
+    img.src = src;
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+    addLog('img', 'Image: ' + src);
 
 }
+
+document.getElementById('unlockAudioBtn').addEventListener('click', function() {
+
+  const silentAudio = new Audio('');
+  silentAudio.play().catch(() => {});
+  this.textContent = 'Audio Enabled';
+  this.style.background = '#333';
+  this.disabled = true;
+
+});
 
 function playAudio(src){
 
@@ -57,11 +67,13 @@ function onTrigger(data){
 
   addLog('evt', 'Trigger received');
 
+
   var board = document.getElementById('board');
   board.style.background = '#2a7a4a';
 
   setTimeout(function(){
     board.style.background = '';
+    clearBoard();
   }, 2000);
 
 }
