@@ -67,7 +67,6 @@ function onTrigger(data){
 }
 
 let wasTriggered = false;
-// Fetching directly from your Firebase Database instead of localhost!
 const API_URL = 'https://raccetcon-default-rtdb.asia-southeast1.firebasedatabase.app/.json';
 
 function pollButton(){
@@ -77,7 +76,6 @@ function pollButton(){
     .then(function(data){
       document.getElementById('status').textContent = 'listening (firebase)';
 
-      // Firebase returns { isButtonClicked: true|false } based on your node server PUT
       if (data && data.isButtonClicked && !wasTriggered) {
         wasTriggered = true;
         onTrigger(data);
