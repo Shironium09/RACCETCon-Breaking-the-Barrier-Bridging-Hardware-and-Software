@@ -67,7 +67,32 @@ function onTrigger(data){
 }
 
 let wasTriggered = false;
-const API_URL = 'https://raccetcon-default-rtdb.asia-southeast1.firebasedatabase.app/.json';
+const API_URL = 'http://localhost:3000/button';
+
+function fetchOnLoad(){
+
+  fetch(API_URL, { cache: 'no-store' })
+  .then(function(res){return res.json(); })
+  .then(function(data){
+  
+    if(data){
+  
+      console.log("CLICK!");
+  
+    }else{
+  
+      console.log("NO CLICK!");
+  
+    }
+  
+  })
+  .catch(function(err){
+    console.log("Error! ", err);
+  })
+  
+
+}
+
 
 function pollButton(){
 
@@ -90,6 +115,8 @@ function pollButton(){
     });
 
 }
+
+
 
 setInterval(pollButton, 1000);
 pollButton();
