@@ -53,36 +53,45 @@ function addLog(tag, text){
 
 function onTrigger(data){
 
+  console.log("Data Received!", data);
+
   addLog('evt', 'Trigger received');
 
-  // add your reactions here, for example:
-  // showImage('photo.png');
-  // playAudio('sound.mp3');
+  var board = document.getElementById('board');
+  board.style.background = '#2a7a4a';
+
+  setTimeout(function(){
+    board.style.background = '';
+  }, 2000);
 
 }
 
-let ws = null;
+let wasTriggered = false;
+// Fetching directly from your Firebase Database instead of localhost!
+const API_URL = 'https://raccetcon-default-rtdb.asia-southeast1.firebasedatabase.app/.json';
 
-function connectWebSocket(){
+function pollButton(){
 
-  const host = window.location.host || 'localhost:3000';
-  ws = new WebSocket('ws://' + host);
+  fetch(API_URL, { cache: 'no-store' })
+    .then(function(res){ return res.json(); })
+    .then(function(data){
+      document.getElementById('status').textContent = 'listening (firebase)';
 
-  ws.onopen = function(){
-    document.getElementById('status').textContent = 'Connected';
-    addLog('evt', 'WebSocket connected');
-  };
+      // Firebase returns { isButtonClicked: true|false } based on your node server PUT
+      if (data && data.isButtonClicked && !wasTriggered) {
+        wasTriggered = true;
+        onTrigger(data);
+      }
 
-  ws.onmessage = function(e){
-    const msg = JSON.parse(e.data);
-    if (msg.type === 'trigger') onTrigger(msg.data);
-  };
-
-  ws.onclose = function(){
-    document.getElementById('status').textContent = 'Disconnected';
-    setTimeout(connectWebSocket, 3000);
-  };
+      if (data && !data.isButtonClicked) {
+        wasTriggered = false;
+      }
+    })
+    .catch(function(){
+      document.getElementById('status').textContent = 'offline';
+    });
 
 }
 
-connectWebSocket();
+setInterval(pollButton, 1000);
+pollButton();
